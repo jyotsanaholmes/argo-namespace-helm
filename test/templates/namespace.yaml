@@ -35,21 +35,5 @@ metadata:
   labels:
     "app.kubernetes.io/name": "{{ $val }}-sa"
 
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: {{ $val }}-{{ $envvals }}-ingress
-  namespace: {{ $val }}-{{ $envvals }}   
-spec:
-    ingress:
-    - from:
-      - namespaceSelector:
-          matchLabels:
-            network.openshift.io/policy-group: ingress
-      - podSelector: {}
-    podSelector: {}
-    policyTypes:
-    - Ingress
-{{ end }}
+
 {{ end }}
