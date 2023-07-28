@@ -12,8 +12,6 @@ metadata:
     
 {{- with $annotations }}
   annotations:
-    openshift.io/description: "{{ $val }}-{{ $envvals }}"
-    openshift.io/display-name: "{{ $val }}-{{ $envvals }}"
     openshift.io/requester: system:admin
     openshift.io/sa.scc.supplemental-groups: 1001/10000
     openshift.io/sa.scc.uid-range: 1001/10000
