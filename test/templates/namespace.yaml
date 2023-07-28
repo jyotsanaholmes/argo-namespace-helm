@@ -1,7 +1,7 @@
 {{- $annotations := .Values.annotations -}}
 {{- $labels := .Values.labels -}}
 {{- $val := .Values.namespaces }}
-{{- $envvals := $.Values.env }}
+{{- $envvals := .Values.env }}
 ---
 apiVersion: v1
 kind: Namespace
