@@ -2,7 +2,7 @@
 {{- $labels := .Values.labels -}}
 {{- $helmResourcePolicy := .Values.helmResourcePolicy -}}
 {{- $val := .Values.namespaces }}
-{{- $envvals := .Values.env }}
+{{- $envvals := $.Values.env }}
 ---
 apiVersion: v1
 kind: Namespace
