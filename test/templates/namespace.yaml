@@ -1,3 +1,58 @@
+{{- $annotations := .Values.annotations -}}
+{{- $labels := .Values.labels -}}
+{{- $helmResourcePolicy := .Values.helmResourcePolicy -}}
+{{range $key, $val := .Values.namespaces }}
+{{range $env, $envvals := $.Values.env }}
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: "{{ $val }}-{{ $envvals }}"
+  labels:
+    router: "{{ $envvals }}"
+    {{- include "namespace.labels" $ | nindent 4 }}
+{{- with $labels }}
+    {{ toYaml . | nindent 4 }}
+{{- end }}
+{{- with $annotations }}
+  annotations:
+    openshift.io/description: "{{ $val }}-{{ $envvals }}"
+    openshift.io/display-name: "{{ $val }}-{{ $envvals }}"
+    openshift.io/node-selector: "environment={{ $envvals }}"
+    openshift.io/requester: system:admin
+    openshift.io/sa.scc.supplemental-groups: 1001/10000
+    openshift.io/sa.scc.uid-range: 1001/10000
+    helm.sh/resource-policy: "{{ $helmResourcePolicy }}"
+{{ toYaml . | indent 4 }}
+{{- end }}
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: "{{ $val }}-sa"
+  namespace: "{{ $val }}-{{ $envvals }}"
+  labels:
+    "app.kubernetes.io/name": "{{ $val }}-sa"
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ $val }}-{{ $envvals }}-ingress
+  namespace: {{ $val }}-{{ $envvals }}   
+spec:
+    ingress:
+    - from:
+      - namespaceSelector:
+          matchLabels:
+            network.openshift.io/policy-group: ingress
+      - podSelector: {}
+    podSelector: {}
+    policyTypes:
+    - Ingress
+{{ end }}
+{{ end }}
 
 
 
