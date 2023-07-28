@@ -9,11 +9,7 @@ kind: Namespace
 metadata:
   name: "{{ $val }}-{{ $envvals }}"
   labels:
-    router: "{{ $envvals }}"
-    {{- include "namespace.labels" $ | nindent 4 }}
-{{- with $labels }}
-    {{ toYaml . | nindent 4 }}
-{{- end }}
+    
 {{- with $annotations }}
   annotations:
     openshift.io/description: "{{ $val }}-{{ $envvals }}"
