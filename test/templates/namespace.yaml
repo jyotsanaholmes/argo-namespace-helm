@@ -8,7 +8,8 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: "{{ $val }}-{{ $envvals }}"
-  labels:    
+  labels:
+    argocd.argoproj.io/managed-by: argocd    
   annotations:
     openshift.io/description: "{{ $val }}-{{ $envvals }}"
     openshift.io/display-name: "{{ $val }}-{{ $envvals }}"
