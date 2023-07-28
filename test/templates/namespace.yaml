@@ -1,18 +1,22 @@
 {{- $annotations := .Values.annotations -}}
 {{- $labels := .Values.labels -}}
 {{- $helmResourcePolicy := .Values.helmResourcePolicy -}}
-{{- $val := .Values.namespaces }}
-{{- $envvals := .Values.env }}
+{{range $key, $val := .Values.namespaces }}
+{{range $env, $envvals := $.Values.env }}
 ---
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: "{{ .Values.namespaces }}-{{ .Values.env }}"
+  name: "{{ $val }}-{{ $envvals }}"
   labels:
-    
+    router: "{{ $envvals }}"
+    {{- include "namespace.labels" $ | nindent 4 }}
+{{- with $labels }}
+    {{ toYaml . | nindent 4 }}
+{{- end }}
 {{- with $annotations }}
   annotations:
-    openshift.io/description: "{{ .Values.namespaces }}-{{ .Values.env }}"
+    openshift.io/description: "{{ $val }}-{{ $envvals }}"
     openshift.io/display-name: "{{ $val }}-{{ $envvals }}"
     openshift.io/node-selector: "environment={{ $envvals }}"
     openshift.io/requester: system:admin
