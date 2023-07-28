@@ -12,7 +12,7 @@ metadata:
     
 {{- with $annotations }}
   annotations:
-    openshift.io/description: "{{ $val }}-{{ $envvals }}"
+    openshift.io/description: "{{ .Values.namespaces }}-{{ .Values.env }}"
     openshift.io/display-name: "{{ $val }}-{{ $envvals }}"
     openshift.io/node-selector: "environment={{ $envvals }}"
     openshift.io/requester: system:admin
