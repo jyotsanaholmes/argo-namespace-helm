@@ -1,20 +1,30 @@
-{{- $annotations := .values.annotations -}}
-{{- $labels := .values.labels -}}
-{{- $val := .values.namespaces }}
-{{- $envvals := .values.env }}
+{{- $annotations := .Values.annotations -}}
+{{- $labels := .Values.labels -}}
+{{- $helmResourcePolicy := .Values.helmResourcePolicy -}}
+{{- $val := .Values.namespaces }}
+{{- $envvals := $.Values.env }}
 ---
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: {{ $val }}
+  name: "{{ $val }}-{{ $envvals }}"
   labels:
-    argocd.argoproj.io/managed-by: argocd    
+    router: "{{ $envvals }}"
+    {{- include "namespace.labels" $ | nindent 4 }}
+{{- with $labels }}
+    {{ toYaml . | nindent 4 }}
+{{- end }}
+{{- with $annotations }}
   annotations:
-    openshift.io/description: {{ $val }}-{{ $envvals }}
-    openshift.io/display-name: {{ $val }}-{{ $envvals }}
+    openshift.io/description: "{{ $val }}-{{ $envvals }}"
+    openshift.io/display-name: "{{ $val }}-{{ $envvals }}"
+    openshift.io/node-selector: "environment={{ $envvals }}"
     openshift.io/requester: system:admin
     openshift.io/sa.scc.supplemental-groups: 1001/10000
     openshift.io/sa.scc.uid-range: 1001/10000
+    helm.sh/resource-policy: "{{ $helmResourcePolicy }}"
+{{ toYaml . | indent 4 }}
+{{- end }}
 
 
 
