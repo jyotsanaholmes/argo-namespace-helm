@@ -4,7 +4,7 @@
 {{- $val := .Values.namespaces }}
 {{- $envvals := .Values.env }}
 ---
-apiVersion: v1
+apiVersion: v2
 kind: Namespace
 metadata:
   name: "{{ .Values.namespaces }}-{{ .Values.env }}"
