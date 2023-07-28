@@ -7,18 +7,18 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: "{{ $val }}-{{ $envvals }}"
+  name: {{ $val }}-{{ $envvals }}
   labels:
     
 {{- with $annotations }}
   annotations:
-    openshift.io/description: "{{ $val }}-{{ $envvals }}"
-    openshift.io/display-name: "{{ $val }}-{{ $envvals }}"
-    openshift.io/node-selector: "environment={{ $envvals }}"
+    openshift.io/description: {{ $val }}-{{ $envvals }}
+    openshift.io/display-name: {{ $val }}-{{ $envvals }}
+    openshift.io/node-selector: environment={{ $envvals }}
     openshift.io/requester: system:admin
     openshift.io/sa.scc.supplemental-groups: 1001/10000
     openshift.io/sa.scc.uid-range: 1001/10000
-    helm.sh/resource-policy: "{{ $helmResourcePolicy }}"
+    helm.sh/resource-policy: {{ $helmResourcePolicy }}
 {{ toYaml . | indent 4 }}
 {{- end }}
 
