@@ -1,6 +1,5 @@
 namespaces:
 - app
-helmResourcePolicy: keep
 labels:
   argocd.argoproj.io/managed-by: argocd
 annotations:
