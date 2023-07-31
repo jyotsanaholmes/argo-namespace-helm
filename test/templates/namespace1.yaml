@@ -1,4 +1,20 @@
+{{- $annotations := .Values.annotations -}}
+{{- $labels := .Values.labels -}}
+{{- $helmResourcePolicy := .Values.helmResourcePolicy -}}
+{{- $val := .Values.namespaces }}
+{{- $envvals := $.Values.env }}
+---
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: {{ .Values.namespaces }}
+  name: app
+  labels:
+    
+{{- with $annotations }}
+  annotations:
+    openshift.io/requester: system:admin
+    openshift.io/sa.scc.supplemental-groups: 1001/10000
+    openshift.io/sa.scc.uid-range: 1001/10000
+    helm.sh/resource-policy: {{ $helmResourcePolicy }}
+{{ toYaml . | indent 4 }}
+{{- end }}
